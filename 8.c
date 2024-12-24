@@ -23,29 +23,6 @@ node *createNode() {
     return n;
 }
 
-void dequeDemo() {
-    int ch;
-    while (1) {
-        printf("\nDeque Operations\n");
-        printf("1. Insert At End\n");
-        printf("2. Delete at End\n");
-        printf("3. Insert at Front\n");
-        printf("4. Delete at Front\n");
-        printf("5. Display\n");
-        printf("6. Exit\n");
-        printf("Enter Your Choice: ");
-        scanf("%d", &ch);
-        switch(ch) {
-            case 1:     addLast();      break;
-            case 2:     deleteLast();   break;
-            case 3:     addFirst();     break;
-            case 4:     deleteFirst();  break;
-            case 5:     display();      break;
-            case 6:     return;
-        }
-    }
-}
-
 void addFirst() {
     node *tmp = createNode();
     if (head == NULL) {
@@ -115,6 +92,29 @@ void display() {
         iter = iter->next;
     }
     printf("\nNo of Employee Nodes is %d\n", count);
+}
+
+void dequeDemo() {
+    int ch;
+    while (1) {
+        printf("\nDeque Operations\n");
+        printf("1. Insert At End\n");
+        printf("2. Delete at End\n");
+        printf("3. Insert at Front\n");
+        printf("4. Delete at Front\n");
+        printf("5. Display\n");
+        printf("6. Exit\n");
+        printf("Enter Your Choice: ");
+        scanf("%d", &ch);
+        switch(ch) {
+            case 1:     addLast();      break;
+            case 2:     deleteLast();   break;
+            case 3:     addFirst();     break;
+            case 4:     deleteFirst();  break;
+            case 5:     display();      break;
+            case 6:     return;
+        }
+    }
 }
 
 int main() {
