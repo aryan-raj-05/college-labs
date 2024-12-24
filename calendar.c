@@ -4,9 +4,9 @@
 #define MAX_LEN 64
 
 typedef struct {
-    char *dayName;
+    char dayName[MAX_LEN];
     int date;
-    char *activity;
+    char activity[MAX_LEN];
 } Day;
 
 void create(Day *day);
@@ -30,8 +30,6 @@ int main() {
 
 void create(Day *day) {
     day = (Day *) malloc(sizeof(Day));
-    day->dayName = (char *) malloc(MAX_LEN * sizeof(char));
-    day->activity = (char *) malloc(MAX_LEN * sizeof(char));
     
     printf("Enter Day Name: ");
     fgets(day->dayName, MAX_LEN, stdin);
