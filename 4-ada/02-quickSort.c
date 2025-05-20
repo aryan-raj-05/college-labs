@@ -23,7 +23,7 @@ int partition(int nums[], int lo, int hi) {
 }
 
 void quicksort(int nums[], int lo, int hi) {
-    if (lo > hi) return;
+    if (lo >= hi) return;
     int mid = partition(nums, lo, hi);
     quicksort(nums, lo, mid - 1);
     quicksort(nums, mid + 1, hi);
