@@ -24,6 +24,7 @@ int main() {
     int n;
     printf("Enter the number of elements: ");
     scanf("%d", &n);
+    
     for (int i = 0; i < n; i++) nums[i] = rand() % 1000;
 
     printf("The array is: \n");
