@@ -5,10 +5,10 @@
 
 int w[MAX], x[MAX], n, m;
 
-void sumOfSub(int s, int k, int r) {
+void sumOfSub(int s, int k, int r) { // current sum, current index, remaining total
     if (k > n) return;
-    x[k] = 1;
 
+    x[k] = 1; // Option 1: include the current element
     if (s + w[k] == m) {
         printf("Solution vector is: ");
         for (int i = 1; i <= n; i++) printf("%d ", x[i]);
@@ -17,7 +17,7 @@ void sumOfSub(int s, int k, int r) {
         sumOfSub(s + w[k], k + 1, r - w[k]);
     }
 
-    x[k] = 0;
+    x[k] = 0; // option 2 - don't include the current element
     if (s + r - w[k] >= m && k + 1 <= n && s + w[k + 1] <= m)
         sumOfSub(s, k + 1, r - w[k]);
 }
