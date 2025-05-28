@@ -29,13 +29,14 @@ void topology(int n) {
     while (count < n) {
         int found = 0;
         for (int i = 0; i < n; i++) {
-            if (inDegree[i] != 0 || flag[i] != 0) continue;
-            printf("%d ", i);
-            count++;
-            flag[i] = 1;
-            found = 1;
-            for (int j = 0; j < n; j++) 
-                if (graph[i][j] == 1) inDegree[j]--;
+            if (inDegree[i] == 0 && flag[i] == 0) {
+                printf("%d ", i);
+                count++;
+                flag[i] = 1;
+                found = 1;
+                for (int j = 0; j < n; j++) 
+                    if (graph[i][j] == 1) inDegree[j]--;
+            }
         }
 
         if (!found) {

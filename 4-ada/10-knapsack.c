@@ -8,11 +8,17 @@ int w[MAX], value[MAX], b[MAX];
 int v[MAX][MAX]; // MEMOIZATION TABLE
 
 int max(int a, int b) { return (a > b) ? a : b; }
+
 int knap(int i, int j) {
     if (i == 0 || j == 0) v[i][j] = 0;
     if (v[i][j] != -1) return v[i][j];
-    if (j < w[i]) v[i][j] = knap(i - 1, j);
-    else v[i][j] = max(knap(i - 1, j), value[i] + knap(i - 1, j - w[i]));
+    if (j < w[i]) 
+        v[i][j] = knap(i - 1, j); // exclude the item
+    else
+        v[i][j] = max(
+            knap(i - 1, j), // exclude the item
+            value[i] + knap(i - 1, j - w[i]) // include the item
+        );
     return v[i][j];
 }
 
