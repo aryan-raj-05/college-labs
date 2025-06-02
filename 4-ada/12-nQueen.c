@@ -3,78 +3,49 @@
 
 int solutionCount = 0;
 
-// Function to print the board
-void printSolution(int boardSize, int queenPositions[20]) {
-    char board[10][10];
-
-    for (int row = 1; row <= boardSize; row++) {
-        for (int col = 1; col <= boardSize; col++) {
-            board[row][col] = 'x';
-        }
-    }
-
-    for (int row = 1; row <= boardSize; row++) {
-        board[row][queenPositions[row]] = 'Q';
-    }
-
-    for (int row = 1; row <= boardSize; row++) {
-        for (int col = 1; col <= boardSize; col++) {
-            printf("%c\t", board[row][col]);
-        }
+void printSolution(int n, int q[]) {
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++)
+            printf("%c\t", (q[i] == j) ? 'Q' : 'x');
         printf("\n");
     }
     printf("\n");
 }
 
-// Function to check if a queen can be placed at the given position
-int canPlace(int queenPositions[20], int currentRow) {
-    for (int previousRow = 1; previousRow < currentRow; previousRow++) {
-        if (
-            queenPositions[previousRow] == queenPositions[currentRow] || 
-            abs(queenPositions[previousRow] - queenPositions[currentRow]) == abs(previousRow - currentRow)
-        ) {
+int canPlace(int q[], int row) {
+    for (int i = 1; i < row; i++) {
+        if (q[i] == q[row] || abs(q[i] - q[row]) == abs(i - row))
             return 0;
-        }
     }
     return 1;
 }
 
-// Function to solve the N-Queens problem using backtracking
-void solveNQueens(int boardSize) {
-    int queenPositions[20];
-    int currentRow = 1;
-    queenPositions[currentRow] = 0;
+void solveNQueens(int n) {
+    int q[20], row = 1;
+    q[row] = 0;
 
-    while (currentRow != 0) {
-        queenPositions[currentRow] += 1;
+    while (row > 0) {
+        q[row]++;
+        while (q[row] <= n && !canPlace(q, row)) q[row]++;
 
-        while (queenPositions[currentRow] <= boardSize && !canPlace(queenPositions, currentRow)) {
-            queenPositions[currentRow] += 1;
-        }
-
-        if (queenPositions[currentRow] <= boardSize) {
-            if (currentRow == boardSize) {
-                solutionCount++;
-                printf("Solution %d:\n", solutionCount);
-                printSolution(boardSize, queenPositions);
+        if (q[row] <= n) {
+            if (row == n) {
+                printf("Solution %d:\n", ++solutionCount);
+                printSolution(n, q);
             } else {
-                currentRow++;
-                queenPositions[currentRow] = 0;
+                row++;
+                q[row] = 0;
             }
         } else {
-            currentRow--;
+            row--;
         }
     }
 }
 
-// Entry point
 int main() {
-    int numberOfQueens;
-
-    printf("Enter the number of queens: ");
-    scanf("%d", &numberOfQueens);
-
-    solveNQueens(numberOfQueens);
-
+    int n;
+    printf("Enter number of queens: ");
+    scanf("%d", &n);
+    solveNQueens(n);
     return 0;
 }
