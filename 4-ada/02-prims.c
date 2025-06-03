@@ -3,94 +3,80 @@
 #include <time.h>
 
 #define INF 999
+#define MAX 20
 
 int numNodes, startNode;
-int selected[20], distance[20], parent[20];
-int weight[20][20], result[20][2];
+int weight[MAX][MAX], selected[MAX], dist[MAX], parent[MAX], result[MAX][2];
 
-// Function to find the vertex with the minimum distance
 int findMin() {
-    int minIndex = -1;
-    for (int i = 1; i <= numNodes; i++) {
-        if (!selected[i]) {
-            if (minIndex == -1 || distance[i] < distance[minIndex]) {
-                minIndex = i;
-            }
-        }
-    }
-    return minIndex;
+    int minIdx = -1;
+    for (int i = 1; i <= numNodes; i++)
+        if (!selected[i] && (minIdx == -1 || dist[i] < dist[minIdx]))
+            minIdx = i;
+    return minIdx;
 }
 
-// Prim's algorithm implementation
 void prims() {
+    for (int i = 1; i <= numNodes; i++) {
+        dist[i] = INF;
+        selected[i] = 0;
+        parent[i] = 0;
+    }
+    dist[startNode] = 0;
+
     int totalCost = 0, edgeCount = 0;
 
     for (int i = 1; i <= numNodes; i++) {
-        selected[i] = 0;
-        distance[i] = INF;
-        parent[i] = 0;
-    }
-
-    distance[startNode] = 0;
-
-    for (int k = 1; k <= numNodes; k++) {
         int u = findMin();
-        if (u == -1) break; // No more reachable nodes
-
+        if (u == -1) break;
         selected[u] = 1;
 
-        // Record the edge
-        if (parent[u] != 0) {
+        if (parent[u]) {
             result[edgeCount][0] = parent[u];
             result[edgeCount][1] = u;
             totalCost += weight[u][parent[u]];
             edgeCount++;
         }
 
-        // Update distances
         for (int v = 1; v <= numNodes; v++) {
-            if (weight[u][v] != INF && !selected[v] && weight[u][v] < distance[v]) {
-                distance[v] = weight[u][v];
+            if (!selected[v] && weight[u][v] < dist[v]) {
+                dist[v] = weight[u][v];
                 parent[v] = u;
             }
         }
     }
 
-    // Output
     if (edgeCount != numNodes - 1) {
         printf("Spanning tree doesn't exist (graph is disconnected)\n");
-    } else {
-        printf("Minimum cost spanning tree:\n");
-        for (int i = 0; i < edgeCount; i++) {
-            int from = result[i][0];
-            int to = result[i][1];
-            printf("%d ---> %d = %d\n", from, to, weight[to][from]);
-        }
-        printf("Total cost of spanning tree: %d\n", totalCost);
+        return;
     }
+
+    printf("Minimum cost spanning tree:\n");
+    for (int i = 0; i < edgeCount; i++) {
+        int u = result[i][0], v = result[i][1];
+        printf("%d ---> %d = %d\n", u, v, weight[v][u]);
+    }
+    printf("Total cost: %d\n", totalCost);
 }
 
 int main() {
-    clock_t startTime, endTime;
-    printf("Enter the number of nodes: ");
+    clock_t start = clock();
+
+    printf("Enter number of nodes: ");
     scanf("%d", &numNodes);
 
-    printf("Enter the adjacency matrix (use %d for INF):\n", INF);
-    for (int i = 1; i <= numNodes; i++) {
-        for (int j = 1; j <= numNodes; j++) {
+    printf("Enter adjacency matrix (%d = INF):\n", INF);
+    for (int i = 1; i <= numNodes; i++)
+        for (int j = 1; j <= numNodes; j++)
             scanf("%d", &weight[i][j]);
-        }
-    }
 
-    printf("Enter the starting node (1 to %d): ", numNodes);
+    printf("Enter starting node (1 to %d): ", numNodes);
     scanf("%d", &startNode);
 
-    startTime = clock();
     prims();
-    endTime = clock();
 
-    double timeTaken = (double)(endTime - startTime) / CLOCKS_PER_SEC;
-    printf("Time taken: %.4f seconds\n", timeTaken);
+    double time = (double)(clock() - start) / CLOCKS_PER_SEC;
+    printf("Time taken: %.4f seconds\n", time);
 
     return 0;
 }
